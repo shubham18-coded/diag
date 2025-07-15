@@ -1,0 +1,17 @@
+- hosts: all
+  vars:
+    packages:
+      - setuptools
+      - tox
+  tasks:
+    - name: Ensure tox and dependencies are installed (Linux)
+      pip:
+        name: "{{ item }}"
+        extra_args: --user
+        executable: pip3
+      with_items: "{{ packages }}"
+      when: "ansible_os_family != 'Windows'"
+    - name: Ensure tox and dependencies are installed (Windows)
+      win_command: "pip install {{ item }}"
+      with_items: "{{ packages }}"
+      when: "ansible_os_family == 'Windows'"

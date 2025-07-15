@@ -1,0 +1,13 @@
+- hosts: all
+  vars:
+    zuul_work_dir: "{{ zuul.project.src_dir }}/{{ path|default() }}"
+    tox_envlist: "{{ envlist }}"
+  roles:
+    - role: ensure-apt-config
+    - role: ensure-python
+      python_version: 3.6
+    - role: tox
+      tox_executable: "{{ ansible_user_dir }}/.local/bin/tox"
+      when: ansible_os_family != "Windows"
+    - role: win-tox
+      when: ansible_os_family == "Windows"
