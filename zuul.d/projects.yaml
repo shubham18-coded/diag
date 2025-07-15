@@ -1,0 +1,20 @@
+- project:
+    check:
+      jobs:
+        - run-tox:
+            vars:
+              envlist: black,flake8
+    gate:
+      jobs:
+        - run-tox:
+            vars:
+              envlist: black,flake8
+    post:
+      jobs:
+        - push-to-github:
+            vars:
+              github:
+                repository: "node0/diagnose"
+    release:
+      jobs:
+        - testandvalidation-python-tox-swf-release
